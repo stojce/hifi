@@ -18,6 +18,7 @@
 #include <QSettings>
 #include <QTouchEvent>
 #include <QList>
+#include <QPointer>
 
 #include <NetworkPacket.h>
 #include <NodeList.h>
@@ -58,14 +59,16 @@
 #include "renderer/AmbientOcclusionEffect.h"
 #include "renderer/GeometryCache.h"
 #include "renderer/GlowEffect.h"
-#include "renderer/VoxelShader.h"
+#include "renderer/MetavoxelSystem.h"
 #include "renderer/PointShader.h"
 #include "renderer/TextureCache.h"
+#include "renderer/VoxelShader.h"
 #include "ui/BandwidthDialog.h"
 #include "ui/ChatEntry.h"
 #include "ui/VoxelStatsDialog.h"
 #include "ui/RearMirrorTools.h"
 #include "ui/LodToolsDialog.h"
+#include "ui/LogDialog.h"
 #include "ParticleTreeRenderer.h"
 #include "ParticleEditHandle.h"
 
@@ -221,7 +224,7 @@ public slots:
     void decreaseVoxelSize();
     void increaseVoxelSize();
     void loadScript();
-    
+    void toggleLogDialog();
     
 private slots:
     
@@ -282,6 +285,7 @@ private:
     void updateThreads(float deltaTime);
     void updateMyAvatarSimulation(float deltaTime);
     void updateParticles(float deltaTime);
+    void updateMetavoxels(float deltaTime);
     void updateTransmitter(float deltaTime);
     void updateCamera(float deltaTime);
     void updateDialogs(float deltaTime);
@@ -361,6 +365,8 @@ private:
 
     QByteArray _voxelsFilename;
     bool _wantToKillLocalVoxels;
+    
+    MetavoxelSystem _metavoxels;
     
     ViewFrustum _viewFrustum; // current state of view frustum, perspective, orientation, etc.
 
@@ -499,6 +505,8 @@ private:
     
     std::vector<VoxelFade> _voxelFades;
     std::vector<Avatar*> _avatarFades;
+
+    QPointer<LogDialog> _logDialog;
 };
 
 #endif /* defined(__interface__Application__) */
